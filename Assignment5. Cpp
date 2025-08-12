@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Shop {
+    int start, end;
+};
+
+bool compare(Shop a, Shop b) {
+    return a.end < b.end; // sort by finishing time
+}
+
+int main() {
+    int n, k;
+    cout << "Enter number of shops: ";
+    cin >> n;
+    cout << "Enter number of people: ";
+    cin >> k;
+
+    vector<int> start(n), finish(n);
+    cout << "Enter start times: ";
+    for (int i = 0; i < n; i++) cin >> start[i];
+    cout << "Enter finish times: ";
+    for (int i = 0; i < n; i++) cin >> finish[i];
+
+    vector<Shop> shops(n);
+    for (int i = 0; i < n; i++) {
+        shops[i] = {start[i], finish[i]};
+    }
+
+    sort(shops.begin(), shops.end(), compare);
+
+    // each person keeps track of when they will be free
+    vector<int> personEnd(k, 0);
+    int totalVisited = 0;
+
+    for (auto shop : shops) {
+        for (int i = 0; i < k; i++) {
+            if (shop.start >= personEnd[i]) {
+                // assign shop to this person
+                personEnd[i] = shop.end;
+                totalVisited++;
+                break; // move to next shop
+            }
+        }
+    }
+
+    cout << "Maximum shops visited: " << totalVisited << endl;
+    return 0;
+}
