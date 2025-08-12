@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Item {
+    int index;
+    double profit;
+    double weight;
+    double ratio;
+};
+
+// Method 1: Select by maximum profit
+double knapsackMaxProfit(vector<Item> items, double capacity) {
+    sort(items.begin(), items.end(), [](Item a, Item b) {
+        return a.profit > b.profit; // Sort descending by profit
+    });
+
+    double totalProfit = 0;
+    double remaining = capacity;
+
+    for (auto &it : items) {
+        if (it.weight <= remaining) {
+            totalProfit += it.profit;
+            remaining -= it.weight;
+        } else {
+            totalProfit += it.profit * (remaining / it.weight);
+            break;
+        }
+    }
+    return totalProfit;
+}
+
+// Method 2: Select by minimum weight
+double knapsackMinWeight(vector<Item> items, double capacity) {
+    sort(items.begin(), items.end(), [](Item a, Item b) {
+        return a.weight < b.weight; // Sort ascending by weight
+    });
+
+    double totalProfit = 0;
+    double remaining = capacity;
+
+    for (auto &it : items) {
+        if (it.weight <= remaining) {
+            totalProfit += it.profit;
+            remaining -= it.weight;
+        } else {
+            totalProfit += it.profit * (remaining / it.weight);
+            break;
+        }
+    }
+    return totalProfit;
+}
+
+// Method 3: Select by maximum profit/weight ratio
+double knapsackMaxRatio(vector<Item> items, double capacity) {
+    sort(items.begin(), items.end(), [](Item a, Item b) {
+        return a.ratio > b.ratio; // Sort descending by ratio
+    });
+
+    double totalProfit = 0;
+    double remaining = capacity;
+
+    for (auto &it : items) {
+        if (it.weight <= remaining) {
+            totalProfit += it.profit;
+            remaining -= it.weight;
+        } else {
+            totalProfit += it.profit * (remaining / it.weight);
+            break;
+        }
+    }
+    return totalProfit;
+}
+
+int main() {
+    int n = 7;
+    double m = 15;
+    vector<double> p = {10, 5, 15, 7, 6, 18, 3};
+    vector<double> w = {2, 3, 5, 7, 1, 4, 1};
+
+    vector<Item> items;
+    for (int i = 0; i < n; i++) {
+        items.push_back({i + 1, p[i], w[i], p[i] / w[i]});
+    }
+
+    cout << "Method 1 (Max Profit): " << knapsackMaxProfit(items, m) << endl;
+    cout << "Method 2 (Min Weight): " << knapsackMinWeight(items, m) << endl;
+    cout << "Method 3 (Max Profit/Weight Ratio): " << knapsackMaxRatio(items, m) << endl;
+
+    return 0;
+}
