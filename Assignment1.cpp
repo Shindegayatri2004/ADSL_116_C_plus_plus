@@ -1,37 +1,42 @@
 #include <iostream>
 using namespace std;
+int countZeros(int arr[], int n)
+{
+    int low = 0, high = n - 1;
+    int firstZero = -1;
 
-int countzeros(int arr[], int n) {
-    int low = 0;
-    int high = n - 1;
-
-    while (low <= high) {
-        int mid = (low +high) / 2;
-
-        if (arr[mid] == 1) {
-            low = mid + 1;
-        } else {
+    while (low <= high)
+    {
+        int mid = (low + high) / 2;
+        if (arr[mid] == 0)
+        {
+            firstZero = mid;
             high = mid - 1;
         }
-    }
+        else
+        {
 
-    
-    return n - low;
+            low = mid + 1;
+        }
+    }
+    if (firstZero == -1)
+        return 0;
+
+    return n - firstZero;
 }
 
-int main() {
-    int a[100], n;
+int main()
+{
 
-    cout << "Enter size of array: ";
+    int arr[100], n;
+    cout << "enter no of elements:";
     cin >> n;
-
-    cout << "Enter array elements (1's followed by 0's): ";
-    for (int i = 0; i < n; i++) {
-        cin >> a[i];
+    cout << "enter array elements:";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
     }
-
-    int zeroCount = countzeros(a, n);
-    cout << "Number of 0's = " << zeroCount << endl;
+    cout << "Number of zeros = " << countZeros(arr, n) << endl;
 
     return 0;
 }
